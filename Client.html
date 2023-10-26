@@ -27,14 +27,14 @@
 
     div{
         text-align: center;
-        font-size: 2em;
+        font-size: 1.5em;
         
     }
 
     button{
         font-size: 1em;
         border-radius: 20px;
-        border: 3px solid;
+        border: 2px solid;
     }
 
     span{
@@ -53,30 +53,36 @@
 
 <script>
 
-let elemento = document.getElementByClass("click");
-let elemento1 = document.getElementByClass("bersaglio");
+let elemento = document.getElementById("entraNelServer");
 
+function gestoreRicezione(messaggio){
+    document.getElementById("ricezione").textContent += messaggio.data + "\n"; // [1]
+  }
 
-function inizializza(){
+  
+  function inviaAlServer(){
+    let primoCampo = document.getElementById("Username").value;
+    ws.send( primoCampo );
+    
+    let secondoCampo = document.getElementById("Password").value;
+    ws.send( secondoCampo );
+  }
+  
+    let ws = new WebSocket("ws://10.1.0.52:8080/serverchat/chat5i1"); // [2]
+    ws.onmessage = gestoreRicezione;
 
-    elemento.addEventListener("click",Clicca);
-    elemento1.addEventListener("bersaglio",Bersaglio);
+  
+  
+  function chiudiLaConnessione(){
+    ws.close();  // [4]
+  }
 
-}
-
-
-function Accesso(){
-
-
-
-
-}
 
 
 </script>
 
 
-<body onload="inizializza()">
+<body>
 
    
     
@@ -90,14 +96,14 @@ function Accesso(){
 
     
     <p>Username:
-        <span contenteditable="true">  </span>
+        <span id="Username" contenteditable="true">  </span>
     </p>
     
-    <p>Password :
-        <span contenteditable="true"> </span>
+    <p>Password:
+        <span id="Password" contenteditable="true"> </span>
     </p>
 
-    <button class="Clicca">Enter</button>
+    <button onclick="entraNelServer">Enter</button>
 
 
 
