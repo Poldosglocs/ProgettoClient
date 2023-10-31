@@ -58,41 +58,56 @@ body {
             background-color: #0056b3;
         }
 
-        #testoInserimento{
+        #msg{
             font-size: 1em;
             border-radius: 0.6em;
             border: 0.1em solid #ccc;
-            width: 100%;
+            width: 70%;
             text-align: center;
             position: absolute;
             bottom: 0;
             
         }
 
-        #corpoChat{
-             
-            
-            
-           
-        }
+       
+        
 
         #btnInvio{
-            text-align: center;
+            
         }
 
       
+
+
+      #corpoChat{
+        font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+      }
+
+      #msg{
+        text-align: center;
+            background-color: #fff;
+            padding: 0.5em;
+            border-radius: 0.6;
+            
+            
+      }
+
+
 </style>
 
 <script>
 
 
-    /*    function gestoreRicezione(messaggio){
+        function gestoreRicezione(messaggio){
     document.getElementById("ricezione").textContent += messaggio.data + "\n"; // [1]
      }
-    */
+    
 
     const ws = new WebSocket("ws:10.1.0.52:8080/serverchat/chat5i1");    //apertura connessione con il server
-   
+    
     if( ws.OPEN == true){
         console.log("connessione aperta");      //controllo per verificare nella console se la connessione è aperta
     }
@@ -102,37 +117,39 @@ body {
 
     const usernameVar = document.getElementById("username").value;      //prendo il valore nella casella input dell'username e lo inserisco nella variabile "usernameVar"
     const passwordVar = document.getElementById("password").value;      //prendo il valore nella casella input della password e lo inserisco nella variabile "passwordVar"
-    if (usernameVar && passwordVar){
+    if (usernameVar && passwordVar == usernameVar){
         message = `login/${usernameVar}/${passwordVar}`;
         ws.send(message); 
         document.getElementById("corpoLogin").style.display = "none";
         document.getElementById("corpoChat").style.display = "block";
 
     }else{
-        alert("inserisci le credenziali");
+        alert("inserisci le credenziali corrette");
         document.getElementById("corpoLogin").style.display = "block";
         document.getElementById("corpoChat").style.display = "none";
     }
-                    
-          
+    
+    
 
-   
-   
   /*if(ws.message("ok") == true){
     document.getElementById(corpoLogin).style.display="none";
   }
    */
-
-
-   
   }
 
-  
-    /* function messaggioServer(){
+     function messaggioServer(){
      let messaggio = document.getElementById("msg").value;   //invio del messaggio
      ws.send( messaggio );
         }
-    */
+    
+
+    function invioDelMessaggio(){
+
+    let messaggio = document.getElementById("msg").value;   
+    ws.send( messaggio );
+     ws.onmessage = gestoreRicezione;
+
+}
 
   function chiudiLaConnessione(){       //chiusura della connessione
     ws.close();  
@@ -140,6 +157,10 @@ body {
 
  // ws://10.1.0.52:8080/serverchat/chat5i1
 
+
+
+  
+  
 
 </script>
 
@@ -163,8 +184,9 @@ body {
    </div>
 
    <div id="corpoChat" style="display: none;"  >
-    <input  type="text" id="testoInserimento"> </input>
-    <button type="button" id="btnInvio"> invia </button>
+    <input  type="text" id="msg"> </input>
+    <button  onclick="invioDelMessaggio()" id="btnInvio"> invia! </button>
+    <textarea readonly name="textAreaPippo" id="ricezione" cols="30" rows="10"></textarea>
    </div>
  
  
