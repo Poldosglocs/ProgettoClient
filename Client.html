@@ -93,10 +93,12 @@
 
     }
 </style>
-
+    
 <script>
-    "use strict";
 
+    //"use strict";
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
     function gestoreRicezione(messaggio) {
 
         let messaggioSenzaLogin = messaggio.data;
@@ -105,13 +107,13 @@
         if (arrayUtente[0] == "listautenti") {
             document.getElementById("ricezione").textContent = "";
         } else {
-            document.getElementById("ricezione").textContent += messaggioSenzaLogin.data + "\n";
+            document.getElementById("ricezione").textContent += messaggio.data + "\n";
         }
 
         //document.getElementById("ricezione").textContent += messaggio.data + "\n"; // [1]
 
     }
-    function gestoreRicezioneLogin(messaggio) {
+    /*function gestoreRicezioneLogin(messaggio) {
 
         let messaggioLogin = messaggio.data;
         let arrayUtente;
@@ -127,7 +129,7 @@
 
     //document.getElementById("ricezione").textContent += messaggio.data + "\n"; // [1]
 
-    }
+    }*/
 
     
 
@@ -164,19 +166,21 @@
     }
 
     function messaggioServer() {
-        let messaggio = document.getElementById("msg").value;   //invio del messaggio
+        let messaggioSenzaLogin = document.getElementById("msg").value;   //invio del messaggio
         ws.send(messaggio);
     }
 
 
     function invioDelMessaggio() {
 
-        let messaggio = document.getElementById("msg").value;
+        let messaggio = "messaggio" + "/" + document.getElementById("username").value + "/" + hours + ":" + minutes + "/" + document.getElementById("msg").value;
         ws.send(messaggio);
         ws.onmessage = gestoreRicezione;
+        //ws.onmessage = gestoreRicezioneLogin;
         
 
     }
+    
 
 
 
