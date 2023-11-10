@@ -96,9 +96,14 @@
     
 <script>
 
-    //"use strict";
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
+    "use strict";
+        const hours = new Date().getHours();
+        const minutes = new Date().getMinutes();
+
+
+        const ws = new WebSocket("ws:10.1.0.52:8080/serverchat/chat5i1");    //apertura connessione con il server
+
+
     function gestoreRicezione(messaggio) {
 
         let messaggioSenzaLogin = messaggio.data;
@@ -113,7 +118,7 @@
         //document.getElementById("ricezione").textContent += messaggio.data + "\n"; // [1]
 
     }
-    /*function gestoreRicezioneLogin(messaggio) {
+    function gestoreRicezioneLogin(messaggio) {
 
         let messaggioLogin = messaggio.data;
         let arrayUtente;
@@ -129,12 +134,12 @@
 
     //document.getElementById("ricezione").textContent += messaggio.data + "\n"; // [1]
 
-    }*/
+    }
 
     
 
 
-    const ws = new WebSocket("ws:10.1.0.52:8080/serverchat/chat5i1");    //apertura connessione con il server
+   
 
     if (ws.OPEN == true) {
         console.log("connessione aperta");      //controllo per verificare nella console se la connessione è aperta
@@ -146,7 +151,7 @@
         const usernameVar = document.getElementById("username").value;      //prendo il valore nella casella input dell'username e lo inserisco nella variabile "usernameVar"
         const passwordVar = document.getElementById("password").value;      //prendo il valore nella casella input della password e lo inserisco nella variabile "passwordVar"
         if (usernameVar && passwordVar == usernameVar) {
-            message = `login/${usernameVar}/${passwordVar}`;
+           let message = `login/${usernameVar}/${passwordVar}`;
             ws.send(message);
             document.getElementById("corpoLogin").style.display = "none";
             document.getElementById("corpoChat").style.display = "block";
@@ -173,7 +178,7 @@
 
     function invioDelMessaggio() {
 
-        let messaggio = "messaggio" + "/" + document.getElementById("username").value + "/" + hours + ":" + minutes + "/" + document.getElementById("msg").value;
+        let messaggio ="[" + hours +":"+ minutes + "]"+" "+ 'messaggio'+ ":"+" "+ document.getElementById("msg").value;
         ws.send(messaggio);
         ws.onmessage = gestoreRicezione;
         //ws.onmessage = gestoreRicezioneLogin;
