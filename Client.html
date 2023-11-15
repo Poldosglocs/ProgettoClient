@@ -72,7 +72,7 @@
 
 
 
-    #btnInvio {}
+
 
 
 
@@ -101,7 +101,7 @@
         const minutes = new Date().getMinutes();
 
 
-        const ws = new WebSocket("ws:10.1.0.52:8080/serverchat/chat5i1");    //apertura connessione con il server
+        const ws = new WebSocket("ws://localhost:8080");    //apertura connessione con il server
 
 
     function gestoreRicezione(messaggio) {
@@ -135,9 +135,6 @@
     //document.getElementById("ricezione").textContent += messaggio.data + "\n"; // [1]
 
     }
-
-    
-
 
    
 
@@ -178,7 +175,8 @@
 
     function invioDelMessaggio() {
 
-        let messaggio ="[" + hours +":"+ minutes + "]"+" "+ 'messaggio'+ ":"+" "+ document.getElementById("msg").value;
+        let contenutoMessaggio =document.getElementById("msg").value;
+        let messaggio =  `[${hours}:${minutes}] messaggio/${contenutoMessaggio}`;
         ws.send(messaggio);
         ws.onmessage = gestoreRicezione;
         //ws.onmessage = gestoreRicezioneLogin;
