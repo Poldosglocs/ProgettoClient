@@ -105,12 +105,12 @@
     #ricezione{
         margin-left: 30em;
         text-align: center;
-        width: 59em;
+        width: 50em;
         height: 74em;
         
     }
     #ricezioneLogin{
-        height: 74em; 
+        height: 70em;
         
     }
 </style>
@@ -120,32 +120,36 @@
     "use strict";
         const hours = new Date().getHours();
         const minutes = new Date().getMinutes();
-
-
+      
         const ws = new WebSocket("ws://localhost:8080");    //apertura connessione con il server
 
 
     function gestoreRicezione(messaggio) {
 
         let messaggioSenzaLogin = messaggio.data;
-        let arrayUtente;
-        arrayUtente = messaggioSenzaLogin.split("/");
-        if (arrayUtente[0] == "listautenti") {
+        let arrayUtente1;
+        arrayUtente1 = messaggioSenzaLogin.split("/");
+        if (arrayUtente1[0] == "listautenti") {
             document.getElementById("ricezione").textContent = "";
         } else {
-            document.getElementById("ricezione").textContent += messaggio.data + "\n";
+            document.getElementById("ricezione").textContent += `${messaggioLogin.data}\n`;
         }
 
         //document.getElementById("ricezione").textContent += messaggio.data + "\n"; // [1]
 
     }
+
+
+
+
+    
     function gestoreRicezioneLogin(messaggio) {
 
         let messaggioLogin = messaggio.data;
         let arrayUtente;
         arrayUtente = messaggioLogin.split("/");
         if (arrayUtente[0] == "listautenti") {
-            document.getElementById("ricezioneLogin").textContent += messaggioLogin.data + "\n";
+            document.getElementById("ricezioneLogin").textContent += `${messaggioLogin.data}\n` ;
         } else {
             document.getElementById("ricezioneLogin").textContent = "";
             
@@ -192,12 +196,17 @@
         let messaggioSenzaLogin = document.getElementById("msg").value;   //invio del messaggio
         ws.send(messaggio);
     }
+    function messaggioServerLogin() {
+        let messaggioLogin = document.getElementById("msg").value;   //invio del messaggio
+        ws.send(messaggio);
+    }
 
 
-    function invioDelMessaggio() {
 
-        let contenutoMessaggio =document.getElementById("msg").value;
-        let messaggio =  `[${hours}:${minutes}] messaggio/${contenutoMessaggio}`;
+    function invioDelMessaggio(arrayUtente1) {
+
+        let contenutoMessaggio = document.getElementById("msg").value;
+        let messaggio =  `(${arrayUtente1[0]}) ${hours}:${minutes}] messaggio/${contenutoMessaggio}`;
         ws.send(messaggio);
         ws.onmessage = gestoreRicezione;
         //ws.onmessage = gestoreRicezioneLogin;
